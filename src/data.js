@@ -7,6 +7,12 @@ export const agency = {
   name: "Lumen Forge",
   logo: "/logo.jpeg",
   tagline: "We build powerful digital products that help businesses grow — fast, smart, and AI-ready.",
+  heroVideo: {
+    src: "/services-demo.webm",
+    type: "video/webm",
+    poster: "/services-video-poster.svg",
+    title: "Services Overview",
+  },
   description: [
     "Lumen Forge is a full-service digital agency specialising in cutting-edge web development, AI integration, and immersive digital experiences. We partner with startups and established businesses alike to turn ambitious ideas into products that perform.",
     "Our approach is product-first: we think about your users, your goals, and your growth before writing a single line of code. From MVPs to enterprise platforms, we design and ship solutions that are built to last — and built to scale.",

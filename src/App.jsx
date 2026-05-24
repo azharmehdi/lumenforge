@@ -112,51 +112,83 @@ function Hero() {
     <section className="hero" id="hero">
       <motion.div className="hero__bg" style={{ y }} />
       <div className="hero__grid-overlay" />
-      <motion.div className="hero__content" style={{ opacity }}>
-        <motion.div className="hero__badge"
-          initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5, delay: 0.1 }}>
-          {agency.available && (<><span className="hero__badge-dot" /> Taking on New Projects</>)}
-        </motion.div>
+      <div className="hero__particles" />
+      <motion.div className="hero__inner" style={{ opacity }}>
+        <div className="hero__content">
+          <motion.div className="hero__badge"
+            initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}>
+            {agency.available && (<><span className="hero__badge-dot" /> Taking on New Projects</>)}
+          </motion.div>
 
-        <motion.div className="hero__logo-wrap"
-          initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}>
-          <img src={agency.logo} alt={agency.name} className="hero__logo-img" />
-        </motion.div>
+          <motion.p className="hero__support"
+            initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}>
+            Helping brands build faster, smarter, and more immersive web experiences.
+          </motion.p>
 
-        <motion.p className="hero__subtitle"
-          initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}>
-          Web Development · AI Integration · AR Experiences
-        </motion.p>
-        <motion.p className="hero__tagline"
-          initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-          transition={{ duration: 0.7, delay: 0.55 }}>
-          {agency.tagline}
-        </motion.p>
-        <motion.div className="hero__actions"
-          initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.7 }}>
-          <a href={wa(contact.whatsapp)} target="_blank" rel="noreferrer" className="btn btn--primary">
-            <MessageCircle size={16} /> Let&apos;s Talk
-          </a>
-          <button className="btn btn--ghost"
-            onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}>
-            View Our Work <ChevronRight size={16} />
-          </button>
-        </motion.div>
-        <motion.div className="hero__socials" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}>
-          {[
-            { href: contact.github, icon: <GithubIcon size={18} />, label: "GitHub" },
-            { href: contact.linkedin, icon: <LinkedinIcon size={18} />, label: "LinkedIn" },
-            { href: contact.instagram, icon: <InstagramIcon size={18} />, label: "Instagram" },
-            { href: contact.upwork, icon: <UpworkIcon size={18} />, label: "Upwork" },
-          ].map(({ href, icon, label }) => (
-            <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="hero__social-link">
-              {icon}
+          <motion.p className="hero__subtitle"
+            initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.35 }}>
+            Web Development · AI Integration · AR Experiences
+          </motion.p>
+          <motion.h1 className="hero__headline"
+            initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, delay: 0.48, ease: [0.22, 1, 0.36, 1] }}>
+            Building AI-Ready Digital Experiences
+          </motion.h1>
+          <motion.p className="hero__tagline"
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            transition={{ duration: 0.7, delay: 0.62 }}>
+            {agency.tagline}
+          </motion.p>
+          <motion.div className="hero__actions"
+            initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.7 }}>
+            <a href={wa(contact.whatsapp)} target="_blank" rel="noreferrer" className="btn btn--primary">
+              <MessageCircle size={16} /> Let&apos;s Talk
             </a>
-          ))}
+            <button className="btn btn--ghost"
+              onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}>
+              View Our Work <ChevronRight size={16} />
+            </button>
+          </motion.div>
+          <motion.div className="hero__socials" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}>
+            {[
+              { href: contact.github, icon: <GithubIcon size={18} />, label: "GitHub" },
+              { href: contact.linkedin, icon: <LinkedinIcon size={18} />, label: "LinkedIn" },
+              { href: contact.instagram, icon: <InstagramIcon size={18} />, label: "Instagram" },
+              { href: contact.upwork, icon: <UpworkIcon size={18} />, label: "Upwork" },
+            ].map(({ href, icon, label }) => (
+              <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="hero__social-link">
+                {icon}
+              </a>
+            ))}
+          </motion.div>
+        </div>
+
+        <motion.div className="hero__video-panel"
+          initial={{ opacity: 0, x: 48 }} animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}>
+          <div className="hero__video-topbar">
+            <span>{agency.heroVideo.title}</span>
+            <span>Web · AI · AR</span>
+          </div>
+          <div className="hero__video-frame">
+            <video
+              className="hero__video"
+              autoPlay
+              loop
+              muted
+              playsInline
+              preload="auto"
+              poster={agency.heroVideo.poster}
+              aria-label={`${agency.name} ${agency.heroVideo.title} video`}
+            >
+              <source src={agency.heroVideo.src} type={agency.heroVideo.type} />
+              Your browser does not support the video tag.
+            </video>
+          </div>
         </motion.div>
       </motion.div>
       <div className="hero__scroll-hint">
