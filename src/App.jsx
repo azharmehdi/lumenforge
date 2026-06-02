@@ -132,11 +132,11 @@ function Hero() {
             transition={{ duration: 0.7, delay: 0.35 }}>
             Web Development · AI Integration · AR Experiences
           </motion.p>
-          <motion.h1 className="hero__headline"
+          <motion.h6 className="hero__headline"
             initial={{ opacity: 0, y: 34 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.75, delay: 0.48, ease: [0.22, 1, 0.36, 1] }}>
-            Building AI-Ready Digital Experiences
-          </motion.h1>
+            Building the Future of Interactive Experiences
+          </motion.h6>
           <motion.p className="hero__tagline"
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             transition={{ duration: 0.7, delay: 0.62 }}>

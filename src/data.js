@@ -6,7 +6,7 @@
 export const agency = {
   name: "Lumen Forge",
   logo: "/logo.jpeg",
-  tagline: "We build powerful digital products that help businesses grow — fast, smart, and AI-ready.",
+  tagline: "Powered by AR visualization, 3D technology, AI integration, and modern web engineering.",
   heroVideo: {
     src: "/services-demo.webm",
     type: "video/webm",
