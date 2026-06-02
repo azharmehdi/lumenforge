@@ -6,6 +6,7 @@ import {
   MapPin, ChevronRight, Star,
 } from "lucide-react";
 import { agency, contact, services, projects, techStack, stats, leadership } from "./data";
+import promaxImage from "./assets/promax.png";
 import "./App.css";
 
 // ── Custom SVG brand icons ───────────────────────────────────
@@ -167,28 +168,15 @@ function Hero() {
           </motion.div>
         </div>
 
-        <motion.div className="hero__video-panel"
+        <motion.div className="hero__visual"
           initial={{ opacity: 0, x: 48 }} animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}>
-          <div className="hero__video-topbar">
-            <span>{agency.heroVideo.title}</span>
-            <span>Web · AI · AR</span>
-          </div>
-          <div className="hero__video-frame">
-            <video
-              className="hero__video"
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="auto"
-              poster={agency.heroVideo.poster}
-              aria-label={`${agency.name} ${agency.heroVideo.title} video`}
-            >
-              <source src={agency.heroVideo.src} type={agency.heroVideo.type} />
-              Your browser does not support the video tag.
-            </video>
-          </div>
+          <div className="hero__visualGlow" />
+          <img
+            src={promaxImage}
+            alt="LumenarForge immersive AR, 3D and AI digital experience showcase"
+            className="hero__showcaseImage"
+          />
         </motion.div>
       </motion.div>
       <div className="hero__scroll-hint">
@@ -389,8 +377,7 @@ function Contact() {
   const links = [
     { label: "WhatsApp", href: wa(contact.whatsapp), icon: <MessageCircle size={18} />, handle: contact.whatsapp },
     { label: "LinkedIn", href: contact.linkedin, icon: <LinkedinIcon size={18} />, handle: "Lumen Forge" },
-    { label: "GitHub", href: contact.github, icon: <GithubIcon size={18} />, handle: "azharmehdi" },
-    { label: "Instagram", href: contact.instagram, icon: <InstagramIcon size={18} />, handle: "@azharmehdi35" },
+    { label: "Instagram", href: contact.instagram, icon: <InstagramIcon size={18} />, handle: "lumenarforge" },
     { label: "Upwork", href: contact.upwork, icon: <UpworkIcon size={18} />, handle: "Hire us on Upwork" },
   ];
   return (

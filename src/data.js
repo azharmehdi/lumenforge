@@ -7,12 +7,6 @@ export const agency = {
   name: "Lumen Forge",
   logo: "/logo.jpeg",
   tagline: "Powered by AR visualization, 3D technology, AI integration, and modern web engineering.",
-  heroVideo: {
-    src: "/services-demo.webm",
-    type: "video/webm",
-    poster: "/services-video-poster.svg",
-    title: "Services Overview",
-  },
   description: [
     "Lumen Forge is a full-service digital agency specialising in cutting-edge web development, AI integration, and immersive digital experiences. We partner with startups and established businesses alike to turn ambitious ideas into products that perform.",
     "Our approach is product-first: we think about your users, your goals, and your growth before writing a single line of code. From MVPs to enterprise platforms, we design and ship solutions that are built to last — and built to scale.",
@@ -45,8 +39,7 @@ export const leadership = [
 export const contact = {
   whatsapp: "+923452718668",
   linkedin: "https://www.linkedin.com/in/azhar-mehdi/",
-  instagram: "https://www.instagram.com/azharmehdi35/",
-  github: "https://github.com/azharmehdi",
+  instagram: "https://www.instagram.com/lumenarforge/",
   upwork: "https://www.upwork.com/freelancers/azharmehdi",
 };
 
