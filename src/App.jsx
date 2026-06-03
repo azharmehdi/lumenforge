@@ -48,6 +48,29 @@ function useInView(threshold = 0.15) {
   return [ref, inView];
 }
 
+function useMediaQuery(query) {
+  const getMatches = () => (
+    typeof window !== "undefined" && window.matchMedia(query).matches
+  );
+  const [matches, setMatches] = useState(getMatches);
+
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setMatches(media.matches);
+    update();
+
+    if (media.addEventListener) {
+      media.addEventListener("change", update);
+      return () => media.removeEventListener("change", update);
+    }
+
+    media.addListener(update);
+    return () => media.removeListener(update);
+  }, [query]);
+
+  return matches;
+}
+
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] } },
@@ -107,14 +130,15 @@ function Nav() {
 // ── Hero ─────────────────────────────────────────────────────
 function Hero() {
   const { scrollY } = useScroll();
+  const isMobileHero = useMediaQuery("(max-width: 768px)");
   const y = useTransform(scrollY, [0, 500], [0, 120]);
   const opacity = useTransform(scrollY, [0, 400], [1, 0]);
   return (
     <section className="hero" id="hero">
-      <motion.div className="hero__bg" style={{ y }} />
+      <motion.div className="hero__bg" style={isMobileHero ? undefined : { y }} />
       <div className="hero__grid-overlay" />
       <div className="hero__particles" />
-      <motion.div className="hero__inner" style={{ opacity }}>
+      <motion.div className="hero__inner" style={isMobileHero ? undefined : { opacity }}>
         <div className="hero__content">
           <motion.div className="hero__badge"
             initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }}
