@@ -37,10 +37,9 @@ export const leadership = [
 ];
 
 export const contact = {
-  whatsapp: "+923452718668",
-  linkedin: "https://www.linkedin.com/in/azhar-mehdi/",
+  email: "azharmehdi35@gmail.com",
+  linkedin: "https://www.linkedin.com/company/arlumenforge/",
   instagram: "https://www.instagram.com/lumenarforge/",
-  upwork: "https://www.upwork.com/freelancers/azharmehdi",
 };
 
 // ── SERVICES ────────────────────────────────────────────────
@@ -94,48 +93,6 @@ export const services = [
     tags: ["REST", "GraphQL", "Webhooks", "Third-party APIs"],
   },
   
-];
-
-// ── PROJECTS ────────────────────────────────────────────────
-// Set featured: true for the top 2 large cards.
-// liveUrl is kept in data but NOT shown on the site publicly.
-export const projects = [
-  {
-    id: 1,
-    title: "AI Customer Support Bot",
-    description:
-      "A fully-featured AI chatbot integrated into a SaaS platform, reducing support ticket volume by 60%. Built with OpenAI's API, a custom knowledge base (RAG), and a sleek chat UI.",
-    liveUrl: "", // share privately when needed
-    tags: ["React", "OpenAI", "Node.js", "RAG"],
-    featured: true,
-  },
-  {
-    id: 2,
-    title: "E-Commerce Platform",
-    description:
-      "A high-performance online store with Stripe payments, product variants, an admin dashboard, and automated order management — built from scratch with Next.js.",
-    liveUrl: "",
-    tags: ["Next.js", "Stripe", "MongoDB", "Tailwind"],
-    featured: true,
-  },
-  {
-    id: 3,
-    title: "AR Product Try-On Experience",
-    description:
-      "A WebAR product visualiser allowing shoppers to place and interact with 3D product models in their real environment before purchasing — boosting conversion rates significantly.",
-    liveUrl: "",
-    tags: ["WebAR", "Three.js", "8th Wall", "GLB"],
-    featured: false,
-  },
-  {
-    id: 4,
-    title: "Real-Time Analytics Dashboard",
-    description:
-      "A live data dashboard for a logistics company, visualising shipment status, delivery metrics, and KPIs — updated every few seconds using WebSockets.",
-    liveUrl: "",
-    tags: ["React", "WebSockets", "Chart.js", "PostgreSQL"],
-    featured: false,
-  },
 ];
 
 // ── TECH STACK (scrolling marquee) ──────────────────────────

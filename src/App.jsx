@@ -1,20 +1,15 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
-  Globe, Bot, Smartphone, ShoppingCart, Zap, BarChart2, Layers,
-  MessageCircle, ArrowUpRight, Menu, X,
-  MapPin, ChevronRight, Star,
+  Globe, Bot, Smartphone, ShoppingCart, Zap, Layers,
+  ArrowUpRight, Menu, X, MapPin, Send,
+  CheckCircle2, AlertCircle, LoaderCircle,
 } from "lucide-react";
-import { agency, contact, services, projects, techStack, stats, leadership } from "./data";
+import { agency, contact, services, techStack, stats, leadership } from "./data";
 import promaxImage from "./assets/promax.png";
 import "./App.css";
 
 // ── Custom SVG brand icons ───────────────────────────────────
-const GithubIcon = ({ size = 18 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
-  </svg>
-);
 const LinkedinIcon = ({ size = 18 }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
     <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
@@ -25,14 +20,12 @@ const InstagramIcon = ({ size = 18 }) => (
     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
   </svg>
 );
-const UpworkIcon = ({ size = 18 }) => (
-  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor">
-    <path d="M18.561 13.158c-1.102 0-2.135-.467-3.074-1.227l.228-1.076.008-.042c.207-1.143.849-3.06 2.839-3.06 1.492 0 2.703 1.212 2.703 2.703-.001 1.489-1.212 2.702-2.704 2.702zm0-8.14c-2.539 0-4.51 1.649-5.31 4.366-1.22-1.834-2.148-4.036-2.687-5.892H7.828v7.112c-.002 1.406-1.141 2.546-2.547 2.548-1.405-.002-2.543-1.142-2.545-2.548V3.492H0v7.112c0 2.914 2.37 5.303 5.281 5.303 2.913 0 5.283-2.389 5.283-5.303v-1.19c.529 1.107 1.182 2.229 1.974 3.221l-1.673 7.873h2.797l1.213-5.71c1.063.679 2.285 1.109 3.686 1.109 3 0 5.439-2.452 5.439-5.45 0-3-2.439-5.439-5.439-5.439z"/>
-  </svg>
-);
 
-const ICONS = { Globe, Bot, Smartphone, ShoppingCart, Zap, BarChart2, Layers };
-const wa = (num) => `https://wa.me/${num.replace(/\D/g, "")}`;
+const ICONS = { Globe, Bot, Smartphone, ShoppingCart, Zap, Layers };
+const socialLinks = [
+  { href: contact.linkedin, Icon: LinkedinIcon, label: "LinkedIn" },
+  { href: contact.instagram, Icon: InstagramIcon, label: "Instagram" },
+];
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -86,23 +79,23 @@ function Nav() {
     window.addEventListener("scroll", h);
     return () => window.removeEventListener("scroll", h);
   }, []);
-  const links = ["About", "Services", "Work", "Contact"];
-  const scrollTo = (id) => {
-    document.getElementById(id.toLowerCase())?.scrollIntoView({ behavior: "smooth" });
-    setOpen(false);
-  };
+  const links = [
+    { label: "About", href: "/#about" },
+    { label: "Services", href: "/#services" },
+    { label: "Contact", href: "/contact" },
+  ];
   return (
     <nav className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
       <div className="nav__inner">
-        <button className="nav__logo" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
+        <a className="nav__logo" href="/" aria-label={`${agency.name} home`}>
           <img src={agency.logo} alt={agency.name} className="nav__logo-img" />
-        </button>
+        </a>
         <ul className="nav__links">
-          {links.map((l) => (
-            <li key={l}><button onClick={() => scrollTo(l)}>{l}</button></li>
+          {links.map(({ label, href }) => (
+            <li key={label}><a href={href}>{label}</a></li>
           ))}
           <li>
-            <a href={wa(contact.whatsapp)} target="_blank" rel="noreferrer" className="nav__cta">
+            <a href="/contact" className="nav__cta">
               Start a Project <ArrowUpRight size={14} />
             </a>
           </li>
@@ -116,8 +109,8 @@ function Nav() {
           <motion.div className="nav__mobile"
             initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
-            {links.map((l) => <button key={l} onClick={() => scrollTo(l)}>{l}</button>)}
-            <a href={wa(contact.whatsapp)} target="_blank" rel="noreferrer" className="nav__cta nav__cta--mobile">
+            {links.map(({ label, href }) => <a key={label} href={href} onClick={() => setOpen(false)}>{label}</a>)}
+            <a href="/contact" className="nav__cta nav__cta--mobile">
               Start a Project <ArrowUpRight size={14} />
             </a>
           </motion.div>
@@ -170,23 +163,17 @@ function Hero() {
           <motion.div className="hero__actions"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7 }}>
-            <a href={wa(contact.whatsapp)} target="_blank" rel="noreferrer" className="btn btn--primary">
-              <MessageCircle size={16} /> Let&apos;s Talk
+            <a href="/contact" className="btn btn--primary">
+              <Send size={16} /> Let&apos;s Talk
             </a>
-            <button className="btn btn--ghost"
-              onClick={() => document.getElementById("work")?.scrollIntoView({ behavior: "smooth" })}>
-              View Our Work <ChevronRight size={16} />
-            </button>
+            <a href="/#services" className="btn btn--ghost">
+              Explore Services <ArrowUpRight size={16} />
+            </a>
           </motion.div>
           <motion.div className="hero__socials" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}>
-            {[
-              { href: contact.github, icon: <GithubIcon size={18} />, label: "GitHub" },
-              { href: contact.linkedin, icon: <LinkedinIcon size={18} />, label: "LinkedIn" },
-              { href: contact.instagram, icon: <InstagramIcon size={18} />, label: "Instagram" },
-              { href: contact.upwork, icon: <UpworkIcon size={18} />, label: "Upwork" },
-            ].map(({ href, icon, label }) => (
+            {socialLinks.map(({ href, Icon, label }) => (
               <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="hero__social-link">
-                {icon}
+                <Icon size={18} />
               </a>
             ))}
           </motion.div>
@@ -256,11 +243,8 @@ function About() {
             <h2 className="section__title">A Digital Agency<br /><em>Built to Deliver</em></h2>
             {agency.description.map((p, i) => <p key={i} className="about__para">{p}</p>)}
             <div className="about__cta-row">
-              <a href={wa(contact.whatsapp)} target="_blank" rel="noreferrer" className="btn btn--primary">
-                <MessageCircle size={15} /> WhatsApp Us
-              </a>
-              <a href={contact.upwork} target="_blank" rel="noreferrer" className="btn btn--outline">
-                <Star size={15} /> Upwork Profile
+              <a href="/contact" className="btn btn--primary">
+                <Send size={15} /> Discuss Your Project
               </a>
             </div>
           </motion.div>
@@ -353,85 +337,187 @@ function Services() {
   );
 }
 
-// ── Work / Projects ──────────────────────────────────────────
-function Work() {
+// ── Home contact CTA ─────────────────────────────────────────
+function ContactCta() {
   const [ref, inView] = useInView();
-  const featured = projects.filter((p) => p.featured);
-  const rest = projects.filter((p) => !p.featured);
-
-  const Card = ({ p }) => (
-    <motion.div className={`project-card ${p.featured ? "project-card--featured" : ""}`} variants={fadeUp}>
-      <div className="project-card__top">
-        <div className="project-card__num">0{p.id}</div>
-        {p.featured && <span className="project-card__badge">Featured</span>}
-      </div>
-      <h3 className="project-card__title">{p.title}</h3>
-      <p className="project-card__desc">{p.description}</p>
-      <div className="project-card__tags">{p.tags.map((t) => <span key={t} className="tag">{t}</span>)}</div>
-      {/* Live link intentionally omitted — shared privately on request */}
-    </motion.div>
-  );
-
   return (
-    <section id="work" className="projects section">
+    <section className="contact-cta section">
       <div className="container">
-        <motion.div className="section__header" ref={ref} initial="hidden" animate={inView ? "show" : "hidden"} variants={stagger}>
-          <motion.span className="section__label" variants={fadeUp}>Our Work</motion.span>
-          <motion.h2 className="section__title" variants={fadeUp}>Projects &amp; <em>Products</em></motion.h2>
-        </motion.div>
-        <motion.div className="projects__featured" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
-          {featured.map((p) => <Card key={p.id} p={p} />)}
-        </motion.div>
-        {rest.length > 0 && (
-          <motion.div className="projects__rest" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
-            {rest.map((p) => <Card key={p.id} p={p} />)}
+        <motion.div className="contact-cta__inner" ref={ref} variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          <motion.div variants={fadeUp}>
+            <span className="section__label">Start a Conversation</span>
+            <h2 className="section__title">Have a digital idea?<br /><em>Let&apos;s shape it together.</em></h2>
+            <p className="contact-cta__sub">
+              Tell us what you&apos;re building and where you need support across AR, 3D, AI, UI/UX, or web development.
+            </p>
           </motion.div>
-        )}
-        <motion.p className="work__note" variants={fadeUp} initial="hidden" animate={inView ? "show" : "hidden"}>
-          Interested in seeing a live demo? <a href={wa(contact.whatsapp)} target="_blank" rel="noreferrer">Get in touch</a> and we&apos;ll walk you through it.
-        </motion.p>
+          <motion.a href="/contact" className="btn btn--primary btn--lg" variants={fadeUp}>
+            Contact Us <ArrowUpRight size={18} />
+          </motion.a>
+        </motion.div>
       </div>
     </section>
   );
 }
 
-// ── Contact ──────────────────────────────────────────────────
-function Contact() {
-  const [ref, inView] = useInView();
-  const links = [
-    { label: "WhatsApp", href: wa(contact.whatsapp), icon: <MessageCircle size={18} />, handle: contact.whatsapp },
-    { label: "LinkedIn", href: contact.linkedin, icon: <LinkedinIcon size={18} />, handle: "Lumen Forge" },
-    { label: "Instagram", href: contact.instagram, icon: <InstagramIcon size={18} />, handle: "lumenarforge" },
-    { label: "Upwork", href: contact.upwork, icon: <UpworkIcon size={18} />, handle: "Hire us on Upwork" },
-  ];
+// ── Contact page ─────────────────────────────────────────────
+function ContactForm() {
+  const [submitting, setSubmitting] = useState(false);
+  const [status, setStatus] = useState(null);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    setSubmitting(true);
+    setStatus(null);
+
+    try {
+      const response = await fetch(`https://formsubmit.co/ajax/${contact.email}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          first_name: formData.get("first_name"),
+          last_name: formData.get("last_name"),
+          email: formData.get("email"),
+          website: formData.get("website"),
+          service: formData.get("service"),
+          _subject: `New Lumen Forge inquiry from ${formData.get("first_name")} ${formData.get("last_name")}`,
+          _template: "table",
+          _captcha: "false",
+          _honey: formData.get("_honey"),
+        }),
+      });
+      const result = await response.json().catch(() => ({}));
+
+      if (!response.ok || result.success === false || result.success === "false") {
+        throw new Error("Submission failed");
+      }
+
+      form.reset();
+      setStatus({
+        type: "success",
+        message: "Thanks for reaching out. Your inquiry has been sent successfully.",
+      });
+    } catch {
+      setStatus({
+        type: "error",
+        message: "We could not send your inquiry right now. Please try again in a moment.",
+      });
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   return (
-    <section id="contact" className="contact section">
-      <div className="container">
-        <motion.div className="contact__inner" ref={ref} variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
-          <motion.div className="contact__text" variants={fadeUp}>
-            <span className="section__label">Get In Touch</span>
-            <h2 className="section__title">Ready to Build<br /><em>Something Great?</em></h2>
-            <p className="contact__sub">Have a project in mind, or just want to explore what&apos;s possible? We&apos;d love to hear from you. Drop us a message and we&apos;ll get back to you promptly.</p>
-            <a href={wa(contact.whatsapp)} target="_blank" rel="noreferrer" className="btn btn--primary btn--lg">
-              <MessageCircle size={18} /> Start a Conversation
-            </a>
-          </motion.div>
-          <motion.div className="contact__links" variants={stagger}>
-            {links.map(({ label, href, icon, handle }) => (
-              <motion.a key={label} href={href} target="_blank" rel="noreferrer" className="contact__link"
-                variants={fadeUp} whileHover={{ x: 6 }} transition={{ type: "spring", stiffness: 300 }}>
-                <span className="contact__link-icon">{icon}</span>
-                <span className="contact__link-info">
-                  <span className="contact__link-label">{label}</span>
-                  <span className="contact__link-handle">{handle}</span>
-                </span>
-                <ArrowUpRight size={16} className="contact__link-arrow" />
-              </motion.a>
-            ))}
-          </motion.div>
-        </motion.div>
+    <form className="contact-form" onSubmit={handleSubmit}>
+      <div className="contact-form__grid">
+        <label className="form-field">
+          <span>First Name <strong aria-hidden="true">*</strong></span>
+          <input type="text" name="first_name" autoComplete="given-name" required />
+        </label>
+        <label className="form-field">
+          <span>Last Name <strong aria-hidden="true">*</strong></span>
+          <input type="text" name="last_name" autoComplete="family-name" required />
+        </label>
+        <label className="form-field contact-form__wide">
+          <span>Email <strong aria-hidden="true">*</strong></span>
+          <input type="email" name="email" autoComplete="email" required />
+        </label>
+        <label className="form-field contact-form__wide">
+          <span>Website <small>Optional</small></span>
+          <input type="url" name="website" autoComplete="url" placeholder="https://" />
+        </label>
+        <label className="form-field contact-form__wide">
+          <span>Service Interested In <small>Optional</small></span>
+          <select name="service" defaultValue="">
+            <option value="">Select a service</option>
+            <option value="AR & 3D Experiences">AR &amp; 3D Experiences</option>
+            <option value="AI Integration">AI Integration</option>
+            <option value="UI/UX Design">UI/UX Design</option>
+            <option value="Web Development">Web Development</option>
+            <option value="Other / Not sure">Other / Not sure</option>
+          </select>
+        </label>
       </div>
-    </section>
+
+      <label className="form-honeypot" aria-hidden="true">
+        Leave this field empty
+        <input type="text" name="_honey" tabIndex="-1" autoComplete="off" />
+      </label>
+
+      <button type="submit" className="btn btn--primary btn--lg contact-form__submit" disabled={submitting}>
+        {submitting ? <LoaderCircle size={18} className="contact-form__spinner" /> : <Send size={18} />}
+        {submitting ? "Sending..." : "Send Inquiry"}
+      </button>
+
+      {status && (
+        <div className={`form-status form-status--${status.type}`} role="status" aria-live="polite">
+          {status.type === "success" ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
+          <span>{status.message}</span>
+        </div>
+      )}
+    </form>
+  );
+}
+
+function ContactPage() {
+  useEffect(() => {
+    document.title = `Contact Us | ${agency.name}`;
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <>
+      <Nav />
+      <main className="contact-page">
+        <div className="contact-page__grid-overlay" />
+        <div className="container contact-page__inner">
+          <motion.div className="contact-page__intro"
+            initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}>
+            <span className="section__label">Contact Us</span>
+            <h1 className="contact-page__title">Let&apos;s build something<br /><em>worth remembering.</em></h1>
+            <p className="contact-page__sub">
+              Share a few details about your goals and the kind of support you need. We&apos;ll use them to start a focused conversation.
+            </p>
+            <div className="contact-page__focus">
+              <span>AR &amp; 3D Experiences</span>
+              <span>AI Integration</span>
+              <span>UI/UX Design</span>
+              <span>Web Development</span>
+            </div>
+            <div className="contact-page__socials">
+              <span className="contact-page__social-label">Connect with us</span>
+              <div className="contact-page__social-links">
+                {socialLinks.map(({ href, Icon, label }) => (
+                  <a key={label} href={href} target="_blank" rel="noreferrer" className="contact-page__social-link">
+                    <Icon size={17} />
+                    <span>{label}</span>
+                    <ArrowUpRight size={14} />
+                  </a>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+
+          <motion.div className="contact-page__panel"
+            initial={{ opacity: 0, y: 32 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}>
+            <div className="contact-page__panel-head">
+              <span>Project inquiry</span>
+              <p>Required fields are marked with an asterisk.</p>
+            </div>
+            <ContactForm />
+          </motion.div>
+        </div>
+      </main>
+      <Footer />
+    </>
   );
 }
 
@@ -442,14 +528,23 @@ function Footer() {
       <div className="container footer__inner">
         <img src={agency.logo} alt={agency.name} className="footer__logo" />
         <span className="footer__copy">© {new Date().getFullYear()} {agency.name}. All rights reserved.</span>
-        <span className="footer__love">Crafted with ♥</span>
+        <div className="footer__actions">
+          <div className="footer__socials">
+            {socialLinks.map(({ href, Icon, label }) => (
+              <a key={label} href={href} target="_blank" rel="noreferrer" aria-label={label} className="footer__social-link">
+                <Icon size={16} />
+              </a>
+            ))}
+          </div>
+          <a href="/contact" className="footer__contact">Contact Us <ArrowUpRight size={13} /></a>
+        </div>
       </div>
     </footer>
   );
 }
 
 // ── App ──────────────────────────────────────────────────────
-export default function App() {
+function HomePage() {
   return (
     <>
       <Nav />
@@ -459,9 +554,13 @@ export default function App() {
       <Leadership />
       <Marquee />
       <Services />
-      <Work />
-      <Contact />
+      <ContactCta />
       <Footer />
     </>
   );
+}
+
+export default function App() {
+  const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+  return pathname === "/contact" ? <ContactPage /> : <HomePage />;
 }
