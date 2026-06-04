@@ -374,7 +374,7 @@ function ContactForm() {
     setStatus(null);
 
     try {
-      const response = await fetch("https://formsubmit.co/ajax/heelo@lumenarforge.com", {
+      const response = await fetch("https://formsubmit.co/ajax/hello@lumenarforge.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
