@@ -37,7 +37,7 @@ export const leadership = [
 ];
 
 export const contact = {
-  email: "azharmehdi35@gmail.com",
+  email: "hello@lumenarforge.com",
   linkedin: "https://www.linkedin.com/company/arlumenforge/",
   instagram: "https://www.instagram.com/lumenarforge/",
 };

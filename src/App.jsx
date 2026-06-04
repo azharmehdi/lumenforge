@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import {
   Globe, Bot, Smartphone, ShoppingCart, Zap, Layers,
   ArrowUpRight, Menu, X, MapPin, Send,
-  CheckCircle2, AlertCircle, LoaderCircle,
+  CheckCircle2,
 } from "lucide-react";
 import { agency, contact, services, techStack, stats, leadership } from "./data";
 import promaxImage from "./assets/promax.png";
@@ -362,59 +362,20 @@ function ContactCta() {
 
 // ── Contact page ─────────────────────────────────────────────
 function ContactForm() {
-  const [submitting, setSubmitting] = useState(false);
-  const [status, setStatus] = useState(null);
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const form = event.currentTarget;
-    const formData = new FormData(form);
-
-    setSubmitting(true);
-    setStatus(null);
-
-    try {
-      const response = await fetch("https://formsubmit.co/ajax/hello@lumenarforge.com", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          first_name: formData.get("first_name"),
-          last_name: formData.get("last_name"),
-          email: formData.get("email"),
-          website: formData.get("website"),
-          service: formData.get("service"),
-          _subject: `New Lumen Forge inquiry from ${formData.get("first_name")} ${formData.get("last_name")}`,
-          _template: "table",
-          _captcha: "false",
-          _honey: formData.get("_honey"),
-        }),
-      });
-      const result = await response.json().catch(() => ({}));
-
-      if (!response.ok || result.success === false || result.success === "false") {
-        throw new Error("Submission failed");
-      }
-
-      form.reset();
-      setStatus({
-        type: "success",
-        message: "Thanks for reaching out. Your inquiry has been sent successfully.",
-      });
-    } catch {
-      setStatus({
-        type: "error",
-        message: "We could not send your inquiry right now. Please try again in a moment.",
-      });
-    } finally {
-      setSubmitting(false);
-    }
-  };
+  const submissionSuccessful = new URLSearchParams(window.location.search).get("success") === "true";
 
   return (
-    <form className="contact-form" onSubmit={handleSubmit}>
+    <form
+      className="contact-form"
+      action={`https://formsubmit.co/${contact.email}`}
+      method="POST"
+    >
+      <input type="hidden" name="_subject" value="New LumenarForge Inquiry" />
+      <input type="hidden" name="_template" value="table" />
+      <input type="hidden" name="_captcha" value="false" />
+      <input type="hidden" name="_next" value="https://www.lumenarforge.com/contact?success=true" />
+      <input type="text" name="_honey" style={{ display: "none" }} />
+
       <div className="contact-form__grid">
         <label className="form-field">
           <span>First Name <strong aria-hidden="true">*</strong></span>
@@ -445,20 +406,14 @@ function ContactForm() {
         </label>
       </div>
 
-      <label className="form-honeypot" aria-hidden="true">
-        Leave this field empty
-        <input type="text" name="_honey" tabIndex="-1" autoComplete="off" />
-      </label>
-
-      <button type="submit" className="btn btn--primary btn--lg contact-form__submit" disabled={submitting}>
-        {submitting ? <LoaderCircle size={18} className="contact-form__spinner" /> : <Send size={18} />}
-        {submitting ? "Sending..." : "Send Inquiry"}
+      <button type="submit" className="btn btn--primary btn--lg contact-form__submit">
+        <Send size={18} /> Send Inquiry
       </button>
 
-      {status && (
-        <div className={`form-status form-status--${status.type}`} role="status" aria-live="polite">
-          {status.type === "success" ? <CheckCircle2 size={18} /> : <AlertCircle size={18} />}
-          <span>{status.message}</span>
+      {submissionSuccessful && (
+        <div className="form-success" role="status">
+          <CheckCircle2 size={18} />
+          <span>Thanks for reaching out. Your inquiry has been sent successfully.</span>
         </div>
       )}
     </form>
