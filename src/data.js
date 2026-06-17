@@ -30,7 +30,7 @@ export const leadership = [
     role: "Co-Founder",
     name: "LumenarForge Co-Founder",
     title: "Co-Founder & Operations Lead",
-    location: "United Kingdom",
+    location: "Pakistan",
     description:
       "Supports client partnerships, project discovery, and international delivery, helping teams turn ambitious ideas into polished digital products.",
   },
