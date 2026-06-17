@@ -19,18 +19,18 @@ export const leadership = [
   {
     id: 1,
     role: "Founder",
-    title: "Pakistan-based Founder",
+    name: "LumenarForge Founder",
+    title: "Founder & Lead Developer",
     location: "Pakistan",
-    image: "/founder.jpg",
     description:
       "Leads product direction, technical strategy, and hands-on delivery across web platforms, AI integrations, and immersive digital experiences.",
   },
   {
     id: 2,
     role: "Co-Founder",
-    title: "UK-based Co-Founder",
+    name: "LumenarForge Co-Founder",
+    title: "Co-Founder & Operations Lead",
     location: "United Kingdom",
-    image: "/co-founder.jpeg",
     description:
       "Supports client partnerships, project discovery, and international delivery, helping teams turn ambitious ideas into polished digital products.",
   },

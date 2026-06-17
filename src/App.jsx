@@ -7,6 +7,8 @@ import {
 } from "lucide-react";
 import { agency, contact, services, techStack, stats, leadership } from "./data";
 import promaxImage from "./assets/promax.png";
+import founderPhoto from "./assets/team/11.jpg";
+import coFounderPhoto from "./assets/team/22.jpg";
 import "./App.css";
 
 // ── Custom SVG brand icons ───────────────────────────────────
@@ -26,6 +28,10 @@ const socialLinks = [
   { href: contact.linkedin, Icon: LinkedinIcon, label: "LinkedIn" },
   { href: contact.instagram, Icon: InstagramIcon, label: "Instagram" },
 ];
+const leadershipPhotos = {
+  1: { src: founderPhoto, width: 843, height: 912 },
+  2: { src: coFounderPhoto, width: 878, height: 887 },
+};
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -270,22 +276,37 @@ function Leadership() {
           </motion.div>
 
           <motion.div className="leadership__grid" variants={stagger}>
-            {leadership.map((member) => (
-              <motion.article key={member.id} className="leader-card" variants={fadeUp}>
-                <div className="leader-card__photo-frame">
-                  <img src={member.image} alt={`${member.role} portrait`} className="leader-card__photo" />
-                </div>
-                <div className="leader-card__content">
-                  <span className="leader-card__eyebrow">{member.role}</span>
-                  <h3 className="leader-card__title">{member.title}</h3>
-                  <div className="leader-card__location">
-                    <MapPin size={14} />
-                    <span>{member.location}</span>
+            {leadership.map((member) => {
+              const photo = leadershipPhotos[member.id];
+
+              return (
+                <motion.article key={member.id} className="leader-card" variants={fadeUp}>
+                  <div className="leader-card__photo-frame">
+                    <img
+                      src={photo.src}
+                      width={photo.width}
+                      height={photo.height}
+                      alt={`${member.name}, ${member.title}`}
+                      className="leader-card__photo"
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div>
-                  <p className="leader-card__desc">{member.description}</p>
-                </div>
-              </motion.article>
-            ))}
+                  <div className="leader-card__content">
+                    <div className="leader-card__identity">
+                      <span className="leader-card__eyebrow">{member.role}</span>
+                      <h3 className="leader-card__name">{member.name}</h3>
+                      <p className="leader-card__title">{member.title}</p>
+                    </div>
+                    <div className="leader-card__location">
+                      <MapPin size={14} />
+                      <span>{member.location}</span>
+                    </div>
+                    <p className="leader-card__desc">{member.description}</p>
+                  </div>
+                </motion.article>
+              );
+            })}
           </motion.div>
         </motion.div>
       </div>
