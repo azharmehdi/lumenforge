@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import {
   Globe, Bot, Smartphone, ShoppingCart, Zap, Layers,
   ArrowUpRight, Menu, X, MapPin, Send,
-  CheckCircle2,
+  CheckCircle2, Calendar, PlayCircle,
 } from "lucide-react";
 import { agency, contact, services, techStack, stats, leadership } from "./data";
 import promaxImage from "./assets/promax.png";
@@ -32,6 +32,40 @@ const leadershipPhotos = {
   1: { src: founderPhoto, width: 843, height: 912 },
   2: { src: coFounderPhoto, width: 878, height: 887 },
 };
+const bookingUrl = import.meta.env.NEXT_PUBLIC_BOOKING_URL || "";
+const previewVideoSrc = "/videos/preview.mp4";
+const previewPosterSrc = "/services-video-poster.svg";
+const serviceOptions = [
+  "Full-Stack Web Development",
+  "AI Integration",
+  "AR / 3D Product Experience",
+  "E-commerce Development",
+  "UI/UX Design",
+  "API Development",
+  "Other",
+];
+
+// Create a Cal.com event type, connect Google Calendar, set Google Meet as the
+// location, add a 90-minute buffer, enable confirmation emails, and place the
+// event URL in NEXT_PUBLIC_BOOKING_URL. Cal.com handles availability, slot
+// blocking, meeting links, buffers, and confirmation emails.
+function BookingButton({ className = "btn btn--primary", size = 16, children = "Book a Demo" }) {
+  const href = bookingUrl || "/contact";
+  const external = Boolean(bookingUrl);
+
+  return (
+    <a
+      href={href}
+      className={className}
+      target={external ? "_blank" : undefined}
+      rel={external ? "noreferrer" : undefined}
+      aria-label={external ? "Book a demo through Cal.com" : "Contact LumenarForge to book a demo"}
+    >
+      <Calendar size={size} />
+      {children}
+    </a>
+  );
+}
 
 function useInView(threshold = 0.15) {
   const ref = useRef(null);
@@ -88,22 +122,20 @@ function Nav() {
   const links = [
     { label: "About", href: "/#about" },
     { label: "Services", href: "/#services" },
-    { label: "Contact", href: "/contact" },
+    { label: "Contact", href: "/#contact" },
   ];
   return (
     <nav className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
       <div className="nav__inner">
         <a className="nav__logo" href="/" aria-label={`${agency.name} home`}>
-          <img src={agency.logo} alt={agency.name} className="nav__logo-img" />
+          <img src={agency.logo} alt="LumenarForge logo" className="nav__logo-img" />
         </a>
         <ul className="nav__links">
           {links.map(({ label, href }) => (
             <li key={label}><a href={href}>{label}</a></li>
           ))}
           <li>
-            <a href="/contact" className="nav__cta">
-              Start a Project <ArrowUpRight size={14} />
-            </a>
+            <BookingButton className="nav__cta" size={14} />
           </li>
         </ul>
         <button className="nav__burger" onClick={() => setOpen(!open)}>
@@ -116,9 +148,7 @@ function Nav() {
             initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
             {links.map(({ label, href }) => <a key={label} href={href} onClick={() => setOpen(false)}>{label}</a>)}
-            <a href="/contact" className="nav__cta nav__cta--mobile">
-              Start a Project <ArrowUpRight size={14} />
-            </a>
+            <BookingButton className="nav__cta nav__cta--mobile" size={14} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -169,11 +199,9 @@ function Hero() {
           <motion.div className="hero__actions"
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7 }}>
-            <a href="/contact" className="btn btn--primary">
-              <Send size={16} /> Let&apos;s Talk
-            </a>
+            <BookingButton />
             <a href="/#services" className="btn btn--ghost">
-              Explore Services <ArrowUpRight size={16} />
+              View Services <ArrowUpRight size={16} />
             </a>
           </motion.div>
           <motion.div className="hero__socials" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}>
@@ -199,6 +227,68 @@ function Hero() {
       <div className="hero__scroll-hint">
         <span>scroll</span>
         <div className="hero__scroll-line" />
+      </div>
+    </section>
+  );
+}
+
+// ── Preview video ────────────────────────────────────────────
+function PreviewVideo() {
+  const [ref, inView] = useInView();
+
+  return (
+    <section id="preview" className="preview section" aria-labelledby="preview-title">
+      <div className="container">
+        <motion.div
+          ref={ref}
+          className="preview__inner"
+          variants={stagger}
+          initial="hidden"
+          animate={inView ? "show" : "hidden"}
+        >
+          <motion.div className="preview__copy" variants={fadeUp}>
+            <span className="section__label">Commerce AR Preview</span>
+            <h2 id="preview-title" className="section__title">See Products<br /><em>Before You Buy</em></h2>
+            <p className="preview__sub">
+              Give customers an interactive 3D and AR shopping experience directly inside your online store.
+            </p>
+            <div className="preview__steps" aria-label="Preview flow">
+              <span>Product page</span>
+              <span>3D viewer</span>
+              <span>View in your space</span>
+            </div>
+            <div className="preview__actions">
+              <BookingButton className="btn btn--primary btn--lg" size={18} />
+              <a href="/#services" className="btn btn--ghost btn--lg">
+                View Services <ArrowUpRight size={18} />
+              </a>
+            </div>
+          </motion.div>
+
+          <motion.div className="preview__media-wrap" variants={fadeUp}>
+            <div className="preview__media-head">
+              <span><PlayCircle size={14} /> AR commerce demo</span>
+              <span>3D + AR</span>
+            </div>
+            <div className="preview__media">
+              {/* The production preview video lives at public/videos/preview.mp4. */}
+              <video
+                className="preview__video"
+                aria-label="Preview of an e-commerce product opening in a 3D viewer and being placed in a real room"
+                autoPlay
+                muted
+                loop
+                playsInline
+                controls
+                preload="metadata"
+                poster={previewPosterSrc}
+              >
+                <source src={previewVideoSrc} type="video/mp4" />
+                Your browser does not support the preview video.
+              </video>
+            </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
@@ -230,7 +320,7 @@ function About() {
           {/* Agency logo panel */}
           <motion.div className="about__logo-panel" variants={fadeUp}>
             <div className="about__logo-frame">
-              <img src={agency.logo} alt={agency.name} className="about__logo-img" />
+              <img src={agency.logo} alt="LumenarForge logo" className="about__logo-img" />
             </div>
             <div className="about__meta">
               <div className="about__location"><MapPin size={13} /><span>{agency.location}</span></div>
@@ -362,7 +452,7 @@ function Services() {
 function ContactCta() {
   const [ref, inView] = useInView();
   return (
-    <section className="contact-cta section">
+    <section id="contact" className="contact-cta section">
       <div className="container">
         <motion.div className="contact-cta__inner" ref={ref} variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
           <motion.div variants={fadeUp}>
@@ -372,9 +462,12 @@ function ContactCta() {
               Tell us what you&apos;re building and where you need support across AR, 3D, AI, UI/UX, or web development.
             </p>
           </motion.div>
-          <motion.a href="/contact" className="btn btn--primary btn--lg" variants={fadeUp}>
-            Contact Us <ArrowUpRight size={18} />
-          </motion.a>
+          <motion.div className="contact-cta__actions" variants={fadeUp}>
+            <BookingButton className="btn btn--primary btn--lg" size={18} />
+            <a href="/contact" className="btn btn--ghost btn--lg">
+              Contact Us <ArrowUpRight size={18} />
+            </a>
+          </motion.div>
         </motion.div>
       </div>
     </section>
@@ -384,46 +477,178 @@ function ContactCta() {
 // ── Contact page ─────────────────────────────────────────────
 function ContactForm() {
   const submissionSuccessful = new URLSearchParams(window.location.search).get("success") === "true";
+  const nextUrl = `${window.location.origin}/contact?success=true`;
+  const [values, setValues] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    website: "",
+    service: "",
+    message: "",
+  });
+  const [errors, setErrors] = useState({});
+
+  const validate = (nextValues) => {
+    const nextErrors = {};
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!nextValues.firstName.trim()) nextErrors.firstName = "First name is required.";
+    if (!nextValues.lastName.trim()) nextErrors.lastName = "Last name is required.";
+    if (!nextValues.email.trim()) {
+      nextErrors.email = "Email is required.";
+    } else if (!emailPattern.test(nextValues.email.trim())) {
+      nextErrors.email = "Enter a valid email address.";
+    }
+    if (!nextValues.service) nextErrors.service = "Choose the service you are interested in.";
+    if (!nextValues.message.trim()) nextErrors.message = "Message is required.";
+
+    if (nextValues.website.trim()) {
+      try {
+        const url = new URL(nextValues.website.trim());
+        if (!["http:", "https:"].includes(url.protocol) || !url.hostname.includes(".")) {
+          nextErrors.website = "Enter a valid website URL, including https://.";
+        }
+      } catch {
+        nextErrors.website = "Enter a valid website URL, including https://.";
+      }
+    }
+
+    return nextErrors;
+  };
+
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setValues((current) => ({ ...current, [name]: value }));
+    setErrors((current) => {
+      if (!current[name]) return current;
+      const nextErrors = { ...current };
+      delete nextErrors[name];
+      return nextErrors;
+    });
+  };
+
+  const handleSubmit = (event) => {
+    const nextErrors = validate(values);
+    setErrors(nextErrors);
+
+    if (Object.keys(nextErrors).length > 0) {
+      event.preventDefault();
+    }
+  };
+
+  const errorId = (name) => `contact-${name}-error`;
+  const fieldError = (name) => errors[name] ? (
+    <span id={errorId(name)} className="form-error">{errors[name]}</span>
+  ) : null;
 
   return (
     <form
       className="contact-form"
       action={`https://formsubmit.co/${contact.email}`}
       method="POST"
+      onSubmit={handleSubmit}
+      noValidate
     >
       <input type="hidden" name="_subject" value="New LumenarForge Inquiry" />
       <input type="hidden" name="_template" value="table" />
       <input type="hidden" name="_captcha" value="false" />
-      <input type="hidden" name="_next" value="https://www.lumenarforge.com/contact?success=true" />
+      <input type="hidden" name="_next" value={nextUrl} />
       <input type="text" name="_honey" style={{ display: "none" }} />
+      {/* Connect EmailJS, Web3Forms, Getform, an API route, or another email service here if FormSubmit is replaced. Keep private API keys in environment variables or server-side code. */}
 
       <div className="contact-form__grid">
-        <label className="form-field">
+        <label className="form-field" htmlFor="firstName">
           <span>First Name <strong aria-hidden="true">*</strong></span>
-          <input type="text" name="first_name" autoComplete="given-name" required />
+          <input
+            id="firstName"
+            type="text"
+            name="firstName"
+            value={values.firstName}
+            onChange={handleChange}
+            autoComplete="given-name"
+            aria-invalid={Boolean(errors.firstName)}
+            aria-describedby={errors.firstName ? errorId("firstName") : undefined}
+            required
+          />
+          {fieldError("firstName")}
         </label>
-        <label className="form-field">
+        <label className="form-field" htmlFor="lastName">
           <span>Last Name <strong aria-hidden="true">*</strong></span>
-          <input type="text" name="last_name" autoComplete="family-name" required />
+          <input
+            id="lastName"
+            type="text"
+            name="lastName"
+            value={values.lastName}
+            onChange={handleChange}
+            autoComplete="family-name"
+            aria-invalid={Boolean(errors.lastName)}
+            aria-describedby={errors.lastName ? errorId("lastName") : undefined}
+            required
+          />
+          {fieldError("lastName")}
         </label>
-        <label className="form-field contact-form__wide">
+        <label className="form-field contact-form__wide" htmlFor="email">
           <span>Email <strong aria-hidden="true">*</strong></span>
-          <input type="email" name="email" autoComplete="email" required />
+          <input
+            id="email"
+            type="email"
+            name="email"
+            value={values.email}
+            onChange={handleChange}
+            autoComplete="email"
+            aria-invalid={Boolean(errors.email)}
+            aria-describedby={errors.email ? errorId("email") : undefined}
+            required
+          />
+          {fieldError("email")}
         </label>
-        <label className="form-field contact-form__wide">
+        <label className="form-field contact-form__wide" htmlFor="website">
           <span>Website <small>Optional</small></span>
-          <input type="url" name="website" autoComplete="url" placeholder="https://" />
+          <input
+            id="website"
+            type="url"
+            name="website"
+            value={values.website}
+            onChange={handleChange}
+            autoComplete="url"
+            placeholder="https://example.com"
+            aria-invalid={Boolean(errors.website)}
+            aria-describedby={errors.website ? errorId("website") : undefined}
+          />
+          {fieldError("website")}
         </label>
-        <label className="form-field contact-form__wide">
-          <span>Service Interested In <small>Optional</small></span>
-          <select name="service" defaultValue="">
+        <label className="form-field contact-form__wide" htmlFor="service">
+          <span>Service Interested In <strong aria-hidden="true">*</strong></span>
+          <select
+            id="service"
+            name="service"
+            value={values.service}
+            onChange={handleChange}
+            aria-invalid={Boolean(errors.service)}
+            aria-describedby={errors.service ? errorId("service") : undefined}
+            required
+          >
             <option value="">Select a service</option>
-            <option value="AR & 3D Experiences">AR &amp; 3D Experiences</option>
-            <option value="AI Integration">AI Integration</option>
-            <option value="UI/UX Design">UI/UX Design</option>
-            <option value="Web Development">Web Development</option>
-            <option value="Other / Not sure">Other / Not sure</option>
+            {serviceOptions.map((service) => (
+              <option key={service} value={service}>{service}</option>
+            ))}
           </select>
+          {fieldError("service")}
+        </label>
+        <label className="form-field contact-form__wide" htmlFor="message">
+          <span>Message <strong aria-hidden="true">*</strong></span>
+          <textarea
+            id="message"
+            name="message"
+            value={values.message}
+            onChange={handleChange}
+            rows={6}
+            placeholder="Tell us about your goals, timeline, and what you want customers to experience."
+            aria-invalid={Boolean(errors.message)}
+            aria-describedby={errors.message ? errorId("message") : undefined}
+            required
+          />
+          {fieldError("message")}
         </label>
       </div>
 
@@ -443,7 +668,7 @@ function ContactForm() {
 
 function ContactPage() {
   useEffect(() => {
-    document.title = `Contact Us | ${agency.name}`;
+    document.title = agency.name;
     window.scrollTo(0, 0);
   }, []);
 
@@ -502,7 +727,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="container footer__inner">
-        <img src={agency.logo} alt={agency.name} className="footer__logo" />
+        <img src={agency.logo} alt="LumenarForge logo" className="footer__logo" />
         <span className="footer__copy">© {new Date().getFullYear()} {agency.name}. All rights reserved.</span>
         <div className="footer__actions">
           <div className="footer__socials">
@@ -525,6 +750,7 @@ function HomePage() {
     <>
       <Nav />
       <Hero />
+      <PreviewVideo />
       <StatsBar />
       <About />
       <Leadership />

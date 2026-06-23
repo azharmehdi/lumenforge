@@ -1,14 +1,14 @@
 // ============================================================
-//  LUMEN FORGE — AGENCY DATA FILE
+//  LUMENARFORGE — AGENCY DATA FILE
 //  Edit this file to update all content on the website
 // ============================================================
 
 export const agency = {
-  name: "Lumen Forge",
-  logo: "/logo.jpeg",
+  name: "LumenarForge",
+  logo: "/logo.svg",
   tagline: "Powered by AR visualization, 3D technology, AI integration, and modern web engineering.",
   description: [
-    "Lumen Forge is a full-service digital agency specialising in cutting-edge web development, AI integration, and immersive digital experiences. We partner with startups and established businesses alike to turn ambitious ideas into products that perform.",
+    "LumenarForge is a full-service digital agency specialising in cutting-edge web development, AI integration, and immersive digital experiences. We partner with startups and established businesses alike to turn ambitious ideas into products that perform.",
     "Our approach is product-first: we think about your users, your goals, and your growth before writing a single line of code. From MVPs to enterprise platforms, we design and ship solutions that are built to last — and built to scale.",
   ],
   location: "Pakistan",
