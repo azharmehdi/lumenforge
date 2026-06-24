@@ -5,7 +5,18 @@ import {
   ArrowUpRight, Menu, X, MapPin, Send,
   CheckCircle2, Calendar, PlayCircle,
 } from "lucide-react";
-import { agency, contact, services, techStack, stats, leadership } from "./data";
+import {
+  agency,
+  contact,
+  services,
+  serviceDetails,
+  techStack,
+  stats,
+  leadership,
+  processSteps,
+  differentiators,
+  values,
+} from "./data";
 import promaxImage from "./assets/promax.png";
 import founderPhoto from "./assets/team/11.jpg";
 import coFounderPhoto from "./assets/team/22.jpg";
@@ -110,6 +121,16 @@ const fadeUp = {
 };
 const stagger = { show: { transition: { staggerChildren: 0.1 } } };
 
+function usePageMeta(title, description) {
+  useEffect(() => {
+    document.title = title;
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute("content", description);
+    }
+  }, [title, description]);
+}
+
 // ── Nav ──────────────────────────────────────────────────────
 function Nav() {
   const [open, setOpen] = useState(false);
@@ -120,9 +141,10 @@ function Nav() {
     return () => window.removeEventListener("scroll", h);
   }, []);
   const links = [
-    { label: "About", href: "/#about" },
-    { label: "Services", href: "/#services" },
-    { label: "Contact", href: "/#contact" },
+    { label: "Home", href: "/" },
+    { label: "Services", href: "/services" },
+    { label: "About", href: "/about" },
+    { label: "Contact", href: "/contact" },
   ];
   return (
     <nav className={`nav ${scrolled ? "nav--scrolled" : ""}`}>
@@ -200,8 +222,8 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7 }}>
             <BookingButton />
-            <a href="/#services" className="btn btn--ghost">
-              View Services <ArrowUpRight size={16} />
+            <a href="/services" className="btn btn--ghost">
+              Explore Services <ArrowUpRight size={16} />
             </a>
           </motion.div>
           <motion.div className="hero__socials" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.9 }}>
@@ -259,7 +281,7 @@ function PreviewVideo() {
             </div>
             <div className="preview__actions">
               <BookingButton className="btn btn--primary btn--lg" size={18} />
-              <a href="/#services" className="btn btn--ghost btn--lg">
+              <a href="/services" className="btn btn--ghost btn--lg">
                 View Services <ArrowUpRight size={18} />
               </a>
             </div>
@@ -309,11 +331,11 @@ function StatsBar() {
   );
 }
 
-// ── About ────────────────────────────────────────────────────
-function About() {
+// ── Home value proposition ───────────────────────────────────
+function HomeValueProposition() {
   const [ref, inView] = useInView();
   return (
-    <section id="about" className="about section">
+    <section id="value" className="about section">
       <div className="container">
         <motion.div ref={ref} className="about__inner" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
 
@@ -335,12 +357,15 @@ function About() {
 
           {/* Text */}
           <motion.div className="about__text" variants={fadeUp}>
-            <span className="section__label">Who We Are</span>
-            <h2 className="section__title">A Digital Agency<br /><em>Built to Deliver</em></h2>
+            <span className="section__label">Why LumenarForge</span>
+            <h2 className="section__title">Immersive digital products<br /><em>built to convert</em></h2>
             {agency.description.map((p, i) => <p key={i} className="about__para">{p}</p>)}
             <div className="about__cta-row">
-              <a href="/contact" className="btn btn--primary">
-                <Send size={15} /> Discuss Your Project
+              <a href="/services" className="btn btn--primary">
+                Explore Services <ArrowUpRight size={15} />
+              </a>
+              <a href="/about" className="btn btn--ghost">
+                About Us <ArrowUpRight size={15} />
               </a>
             </div>
           </motion.div>
@@ -427,6 +452,9 @@ function Services() {
         <motion.div className="section__header" ref={ref} initial="hidden" animate={inView ? "show" : "hidden"} variants={stagger}>
           <motion.span className="section__label" variants={fadeUp}>What We Offer</motion.span>
           <motion.h2 className="section__title" variants={fadeUp}>Services That Drive<br /><em>Real Results</em></motion.h2>
+          <motion.p className="section__sub" variants={fadeUp}>
+            From conversion-focused websites to AI automation and immersive product experiences, our work is built around the way modern customers evaluate, trust, and buy.
+          </motion.p>
         </motion.div>
         <motion.div className="services__grid" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
           {services.map((s) => {
@@ -440,6 +468,262 @@ function Services() {
                   {s.tags.map((t) => <span key={t} className="tag">{t}</span>)}
                 </div>
               </motion.div>
+            );
+          })}
+        </motion.div>
+        <motion.div className="services__footer" initial="hidden" animate={inView ? "show" : "hidden"} variants={stagger}>
+          <motion.a href="/services" className="btn btn--primary btn--lg" variants={fadeUp}>
+            Explore Services <ArrowUpRight size={18} />
+          </motion.a>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ── Home process ─────────────────────────────────────────────
+function ProcessSection() {
+  const [ref, inView] = useInView();
+
+  return (
+    <section className="process section" aria-labelledby="process-title">
+      <div className="container">
+        <motion.div ref={ref} className="section__header process__header" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          <motion.span className="section__label" variants={fadeUp}>How We Work</motion.span>
+          <motion.h2 id="process-title" className="section__title" variants={fadeUp}>
+            From first idea<br /><em>to launch-ready experience</em>
+          </motion.h2>
+        </motion.div>
+        <motion.div className="process__grid" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          {processSteps.map((item) => (
+            <motion.article key={item.step} className="process-card" variants={fadeUp}>
+              <span className="process-card__step">{item.step}</span>
+              <h3>{item.title}</h3>
+              <p>{item.description}</p>
+            </motion.article>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ── Why choose ───────────────────────────────────────────────
+function WhyChoose() {
+  const [ref, inView] = useInView();
+
+  return (
+    <section className="why section" aria-labelledby="why-title">
+      <div className="container">
+        <motion.div ref={ref} className="why__inner" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          <motion.div className="why__intro" variants={fadeUp}>
+            <span className="section__label">Why Choose Us</span>
+            <h2 id="why-title" className="section__title">Built for brands that need<br /><em>more than a website</em></h2>
+            <p>
+              LumenarForge combines product thinking, immersive technology, and practical engineering so every digital experience has a clear business purpose.
+            </p>
+          </motion.div>
+          <motion.div className="why__grid" variants={stagger}>
+            {differentiators.map((item) => (
+              <motion.article key={item.title} className="why-card" variants={fadeUp}>
+                <CheckCircle2 size={18} />
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </motion.article>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// ── Home founder preview ────────────────────────────────────
+function FounderPreview() {
+  const [ref, inView] = useInView();
+
+  return (
+    <section className="founder-preview section" aria-labelledby="founder-preview-title">
+      <div className="container">
+        <motion.div ref={ref} className="founder-preview__inner" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          <motion.div className="founder-preview__copy" variants={fadeUp}>
+            <span className="section__label">Meet the Founders</span>
+            <h2 id="founder-preview-title" className="section__title">Small team.<br /><em>Focused execution.</em></h2>
+            <p>
+              Built by a team focused on immersive web, AI integration, and conversion-driven digital experiences.
+            </p>
+            <a href="/about" className="btn btn--ghost">
+              Learn more about us <ArrowUpRight size={16} />
+            </a>
+          </motion.div>
+          <motion.div className="founder-preview__people" variants={stagger}>
+            {leadership.map((member) => {
+              const photo = leadershipPhotos[member.id];
+
+              return (
+                <motion.article key={member.id} className="founder-mini-card" variants={fadeUp}>
+                  <img
+                    src={photo.src}
+                    width={photo.width}
+                    height={photo.height}
+                    alt={`${member.name}, ${member.title}`}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div>
+                    <h3>{member.name}</h3>
+                    <p>{member.title}</p>
+                  </div>
+                </motion.article>
+              );
+            })}
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function PageHero({ label, title, description, children }) {
+  return (
+    <section className="page-hero">
+      <div className="page-hero__grid-overlay" />
+      <div className="container page-hero__inner">
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <span className="section__label">{label}</span>
+          <h1 className="page-hero__title">{title}</h1>
+          <p className="page-hero__sub">{description}</p>
+          {children}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function CompanyStory() {
+  const [ref, inView] = useInView();
+
+  return (
+    <section className="story section">
+      <div className="container">
+        <motion.div ref={ref} className="story__inner" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          <motion.div variants={fadeUp}>
+            <span className="section__label">Company Story</span>
+            <h2 className="section__title">A digital agency for<br /><em>the next buying journey</em></h2>
+          </motion.div>
+          <motion.div className="story__copy" variants={fadeUp}>
+            <p>
+              LumenarForge builds modern websites, AI-powered systems, AR/3D product experiences, and scalable digital platforms for brands that want more than a static online presence.
+            </p>
+            <p>
+              Our work sits where product strategy, interface design, and practical engineering meet. We help teams turn complex ideas into digital experiences that customers can understand, explore, and act on.
+            </p>
+          </motion.div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function MissionVision() {
+  const [ref, inView] = useInView();
+
+  return (
+    <section className="mission section">
+      <div className="container">
+        <motion.div ref={ref} className="mission__grid" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          <motion.article className="mission-card" variants={fadeUp}>
+            <span className="section__label">Mission</span>
+            <h2>Help businesses adopt modern web, AI, and immersive technologies with clarity.</h2>
+            <p>
+              We translate emerging tools into useful digital products that improve customer experience, reduce friction, and support growth.
+            </p>
+          </motion.article>
+          <motion.article className="mission-card" variants={fadeUp}>
+            <span className="section__label">Vision</span>
+            <h2>Make AR, AI, and 3D commerce accessible for growing brands.</h2>
+            <p>
+              We believe immersive and intelligent digital experiences should not be limited to enterprise teams with huge internal departments.
+            </p>
+          </motion.article>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function ValuesSection() {
+  const [ref, inView] = useInView();
+
+  return (
+    <section className="values section">
+      <div className="container">
+        <motion.div ref={ref} className="section__header" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          <motion.span className="section__label" variants={fadeUp}>Values</motion.span>
+          <motion.h2 className="section__title" variants={fadeUp}>Principles behind<br /><em>every build</em></motion.h2>
+        </motion.div>
+        <motion.div className="values__grid" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          {values.map((value) => (
+            <motion.article key={value.title} className="value-card" variants={fadeUp}>
+              <h3>{value.title}</h3>
+              <p>{value.description}</p>
+            </motion.article>
+          ))}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function ServiceDetailSections() {
+  const [ref, inView] = useInView();
+
+  return (
+    <section className="service-details section" aria-labelledby="service-details-title">
+      <div className="container">
+        <motion.div ref={ref} className="section__header" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          <motion.span className="section__label" variants={fadeUp}>Capabilities</motion.span>
+          <motion.h2 id="service-details-title" className="section__title" variants={fadeUp}>Services designed for<br /><em>modern digital businesses</em></motion.h2>
+        </motion.div>
+
+        <motion.div className="service-details__stack" variants={stagger} initial="hidden" animate={inView ? "show" : "hidden"}>
+          {serviceDetails.map((service) => {
+            const Icon = ICONS[service.icon] || Globe;
+
+            return (
+              <motion.article key={service.id} id={service.id} className="service-detail" variants={fadeUp}>
+                <div className="service-detail__icon"><Icon size={24} /></div>
+                <div className="service-detail__content">
+                  <span className="service-detail__eyebrow">{service.eyebrow}</span>
+                  <h3>{service.title}</h3>
+                  <p>{service.description}</p>
+                  <div className="service-detail__columns">
+                    <div>
+                      <h4>Key benefits</h4>
+                      <ul>
+                        {service.benefits.map((benefit) => (
+                          <li key={benefit}>{benefit}</li>
+                        ))}
+                      </ul>
+                    </div>
+                    <div>
+                      <h4>Technologies & capabilities</h4>
+                      <div className="service-detail__tags">
+                        {service.capabilities.map((capability) => (
+                          <span key={capability} className="tag">{capability}</span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <a href="/contact" className="btn btn--outline">
+                    {service.cta} <ArrowUpRight size={16} />
+                  </a>
+                </div>
+              </motion.article>
             );
           })}
         </motion.div>
@@ -471,6 +755,78 @@ function ContactCta() {
         </motion.div>
       </div>
     </section>
+  );
+}
+
+function AboutPage() {
+  usePageMeta(
+    "About LumenarForge | Immersive Web & AI Agency",
+    "Learn about LumenarForge, a digital agency building modern websites, AI systems, AR experiences, and 3D commerce solutions."
+  );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <>
+      <Nav />
+      <main>
+        <PageHero
+          label="About Us"
+          title="About LumenarForge"
+          description="We build immersive, intelligent, and conversion-driven digital experiences for brands ready to turn modern web, AI, AR, and 3D technology into practical growth."
+        >
+          <div className="page-hero__actions">
+            <BookingButton className="btn btn--primary btn--lg" size={18} />
+            <a href="/services" className="btn btn--ghost btn--lg">
+              View Services <ArrowUpRight size={18} />
+            </a>
+          </div>
+        </PageHero>
+        <CompanyStory />
+        <Leadership />
+        <MissionVision />
+        <ValuesSection />
+        <ContactCta />
+      </main>
+      <Footer />
+    </>
+  );
+}
+
+function ServicesPage() {
+  usePageMeta(
+    "Services | Web, AI, AR & 3D Development | LumenarForge",
+    "Explore LumenarForge services including full-stack web development, AI integration, AR commerce, 3D product visualization, UI/UX design, and e-commerce solutions."
+  );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  return (
+    <>
+      <Nav />
+      <main>
+        <PageHero
+          label="Services"
+          title="Services"
+          description="Web, AI, AR, and 3D solutions built for modern digital businesses."
+        >
+          <div className="page-hero__actions">
+            <BookingButton className="btn btn--primary btn--lg" size={18} />
+            <a href="/contact" className="btn btn--ghost btn--lg">
+              Contact Us <ArrowUpRight size={18} />
+            </a>
+          </div>
+        </PageHero>
+        <ServiceDetailSections />
+        <PreviewVideo />
+        <ContactCta />
+      </main>
+      <Footer />
+    </>
   );
 }
 
@@ -667,8 +1023,12 @@ function ContactForm() {
 }
 
 function ContactPage() {
+  usePageMeta(
+    "Contact LumenarForge | Book a Demo",
+    "Contact LumenarForge to discuss web development, AI integration, AR experiences, 3D product visualization, and conversion-focused digital platforms."
+  );
+
   useEffect(() => {
-    document.title = agency.name;
     window.scrollTo(0, 0);
   }, []);
 
@@ -746,16 +1106,27 @@ function Footer() {
 
 // ── App ──────────────────────────────────────────────────────
 function HomePage() {
+  usePageMeta(
+    "LumenarForge | AR, AI & Web Development Agency",
+    "LumenarForge builds immersive websites, AI integrations, AR experiences, 3D product visualization, and conversion-focused digital platforms."
+  );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <Nav />
       <Hero />
-      <PreviewVideo />
       <StatsBar />
-      <About />
-      <Leadership />
-      <Marquee />
+      <HomeValueProposition />
       <Services />
+      <PreviewVideo />
+      <ProcessSection />
+      <WhyChoose />
+      <FounderPreview />
+      <Marquee />
       <ContactCta />
       <Footer />
     </>
@@ -764,5 +1135,10 @@ function HomePage() {
 
 export default function App() {
   const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
-  return pathname === "/contact" ? <ContactPage /> : <HomePage />;
+
+  if (pathname === "/about") return <AboutPage />;
+  if (pathname === "/services") return <ServicesPage />;
+  if (pathname === "/contact") return <ContactPage />;
+
+  return <HomePage />;
 }
